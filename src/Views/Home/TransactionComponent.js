@@ -1,17 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TransactionCell from "./TransactionCell";
 
 const TransactionComponent = (props) => {
+  const [searchText, updateSearchText] = useState("");
+  const [filteredTransaction, updateFilteredTxn] = useState(props.transactions);
+  const handleSearch = (text) => {
+    updateSearchText(text);
+    updateFilteredTxn(
+      props.transactions.filter((transactionDetails) =>
+        transactionDetails.desc.toLowerCase().includes(text.toLowerCase())
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (props.transactions) {
+      updateFilteredTxn(props.transactions);
+    }
+  }, [props.transactions]);
   return (
     <Container>
       Transactions
-      <input placeholder="Search" />
-      {props.transactions.length
-        ? props.transactions.map((transactionDetails) => (
-            <TransactionCell transactionDetails={transactionDetails} />
-          ))
-        : ""}
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchText}
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+      />
+      {filteredTransaction.map((transactionDetails) => (
+        <TransactionCell transactionDetails={transactionDetails} />
+      ))}
     </Container>
   );
 };

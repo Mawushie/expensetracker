@@ -57,6 +57,7 @@ const AddTransactionButton = styled.button`
   cursor: pointer;
   font-weight: bold;
   font-size: 15px;
+  border: transparent;
 `;
 
 const ExpenseIncomeContainer = styled.div`
